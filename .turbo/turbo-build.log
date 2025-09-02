@@ -1,0 +1,20 @@
+
+[43m[30m WARN [39m[49m Issue while reading "/Users/apple/Desktop/embed-pdf-viewer/.npmrc". Failed to replace env in config: ${NPM_TOKEN}
+
+> @embedpdf/snippet@1.0.0 prebuild /Users/apple/Desktop/embed-pdf-viewer/snippet
+> rimraf dist/*
+
+
+> @embedpdf/snippet@1.0.0 build /Users/apple/Desktop/embed-pdf-viewer/snippet
+> rollup --config rollup.config.js
+
+[36m
+[1msrc/embedpdf.ts[22m → [1mdist[22m...[39m
+Browserslist: browsers data (caniuse-lite) is 7 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+[BABEL] Note: The code generator has deoptimised the styling of /Users/apple/Desktop/embed-pdf-viewer/packages/engines/dist/lib/pdfium/web/worker-engine.js as it exceeds the max of 500KB.
+[1m[33m(!) Plugin typescript: @rollup/plugin-typescript TS2688: Cannot find type definition file for 'classnames'.
+  The file is in the program because:
+    Entry point for implicit type library 'classnames'[39m[22m
+[32mcreated [1mdist[22m in [1m5.3s[22m[39m
