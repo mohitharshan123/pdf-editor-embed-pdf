@@ -17,4 +17,4 @@ Browserslist: browsers data (caniuse-lite) is 7 months old. Please run:
 [1m[33m(!) Plugin typescript: @rollup/plugin-typescript TS2688: Cannot find type definition file for 'classnames'.
   The file is in the program because:
     Entry point for implicit type library 'classnames'[39m[22m
-[32mcreated [1mdist[22m in [1m5.8s[22m[39m
+[32mcreated [1mdist[22m in [1m5.4s[22m[39m
