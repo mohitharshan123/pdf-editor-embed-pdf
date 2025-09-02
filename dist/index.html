@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EmbedPDF</title>
+  <style>
+    html,
+    body {
+      overscroll-behavior: none;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="pdf-viewer" style="height: 100dvh"></div>
+  <script async type="module">
+    import EmbedPDF from './embedpdf.js';
+
+    const EPDFinstance = EmbedPDF.init({
+      type: 'container',
+      target: document.getElementById('pdf-viewer'),
+      src: 'https://snippet.embedpdf.com/ebook.pdf',
+      worker: true,
+      plugins: {
+        annotation: {
+          signatureUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDMwMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGZpbHRlciBpZD0iaW5rIj48ZmVHYXVzc2lhbkJsdXIgaW49IlNvdXJjZUdyYXBoaWMiIHN0ZERldmlhdGlvbj0iMC41Ii8+PC9maWx0ZXI+PC9kZWZzPjxwYXRoIGQ9Ik0yMCA2MEM0MCA0MCA3MCA3MCA5MCA1MFMxMzAgMzAgMTUwIDUwUzE5MCA0MCAyMTAgNjBTMjUwIDMwIDI3MCA1MCIgc3Ryb2tlPSIjMDAzM2ZmIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIGZpbHRlcj0idXJsKCNpbmspIi8+PHBhdGggZD0iTTEwIDg1TDI5MCA4NSIgc3Ryb2tlPSIjMDAzM2ZmIiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0ibm9uZSIvPjx0ZXh0IHg9IjE1MCIgeT0iMTA1IiBmb250LWZhbWlseT0iR2VvcmdpYSwgc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtc3R5bGU9Iml0YWxpYyIgZmlsbD0iIzMzMzMzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Sm9obiBTbWl0aDwvdGV4dD48L3N2Zz4='
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,1 @@
+{"version":3,"file":"line-sidebar.d.ts","sourceRoot":"","sources":["../../../src/components/annotation-sidebar/line-sidebar.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAY,CAAC,EAAE,MAAM,QAAQ,CAAC;AAGrC,OAAO,EAGL,iBAAiB,EACjB,qBAAqB,EACtB,MAAM,kBAAkB,CAAC;AAG1B,OAAO,EAAE,gBAAgB,EAAE,MAAM,UAAU,CAAC;AAG5C,eAAO,MAAM,WAAW,GAAI,6DAMzB,gBAAgB,CAAC,iBAAiB,GAAG,qBAAqB,CAAC,yBAqJ7D,CAAC"}
