@@ -1,0 +1,1 @@
+{"version":3,"file":"menu-dropdown.d.ts","sourceRoot":"","sources":["../../../src/components/comment-sidebar/menu-dropdown.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAE,CAAC,EAAE,MAAM,QAAQ,CAAC;AAI3B,UAAU,iBAAiB;IACzB,MAAM,EAAE,MAAM,IAAI,CAAC;IACnB,QAAQ,EAAE,MAAM,IAAI,CAAC;IACrB,OAAO,EAAE,MAAM,IAAI,CAAC;CACrB;AAED,eAAO,MAAM,YAAY,GAAI,+BAA+B,iBAAiB,kBAuC5E,CAAC"}
