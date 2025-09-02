@@ -172,6 +172,13 @@ import { AnnotationMenu } from './annotation-menu';
 export { ScrollStrategy, ZoomMode, SpreadMode, Rotation };
 
 // **Enhanced Configuration Interface**
+export interface CustomButtonConfig {
+  enabled?: boolean;
+  label?: string;
+  icon?: string;
+  callback?: () => void;
+}
+
 export interface PluginConfigs {
   viewport?: ViewportPluginConfig;
   scroll?: ScrollPluginConfig;
@@ -181,6 +188,7 @@ export interface PluginConfigs {
   tiling?: TilingPluginConfig;
   thumbnail?: ThumbnailPluginConfig;
   annotation?: AnnotationPluginConfig;
+  customButton?: CustomButtonConfig;
 }
 
 export interface PDFViewerConfig {
@@ -222,6 +230,12 @@ const DEFAULT_PLUGIN_CONFIGS: Required<PluginConfigs> = {
   annotation: {
     enabled: true,
   },
+  customButton: {
+    enabled: false,
+    label: 'Custom Action',
+    icon: 'save',
+    callback: () => { },
+  },
 };
 
 // **Utility function to merge configurations**
@@ -235,6 +249,7 @@ function mergePluginConfigs(userConfigs: PluginConfigs = {}): Required<PluginCon
     tiling: { ...DEFAULT_PLUGIN_CONFIGS.tiling, ...userConfigs.tiling },
     thumbnail: { ...DEFAULT_PLUGIN_CONFIGS.thumbnail, ...userConfigs.thumbnail },
     annotation: { ...DEFAULT_PLUGIN_CONFIGS.annotation, ...userConfigs.annotation },
+    customButton: { ...DEFAULT_PLUGIN_CONFIGS.customButton, ...userConfigs.customButton },
   };
 }
 
@@ -255,6 +270,9 @@ type State = GlobalStoreState<{
   [INTERACTION_MANAGER_PLUGIN_ID]: InteractionManagerState;
   [HISTORY_PLUGIN_ID]: HistoryState;
 }>;
+
+// Store the current plugin configs for use in menu items
+let currentPluginConfigs: Required<PluginConfigs> | null = null;
 
 export const menuItems: Record<string, MenuItem<State>> = {
   menuCtr: {
@@ -711,6 +729,18 @@ export const menuItems: Record<string, MenuItem<State>> = {
     active: (storeState) =>
       storeState.plugins.ui.panel.rightPanel.open === true &&
       storeState.plugins.ui.panel.rightPanel.visibleChild === 'search',
+  },
+  customButton: {
+    id: 'customButton',
+    label: 'Custom Action',
+    icon: currentPluginConfigs?.customButton?.icon || 'save',
+    type: 'action',
+    action: () => {
+      if (currentPluginConfigs?.customButton?.callback) {
+        currentPluginConfigs.customButton.callback();
+      }
+    },
+    visible: () => currentPluginConfigs?.customButton?.enabled || false,
   },
   fitToWidth: {
     id: 'fitToWidth',
@@ -2040,6 +2070,21 @@ export const components: Record<string, UIComponentType<State>> = {
       active: isActive(menuItems.search, storeState),
     }),
   },
+  customButton: {
+    type: 'iconButton',
+    id: 'customButton',
+    props: {
+      active: false,
+      commandId: 'customButton',
+      label: 'Custom Action',
+    },
+    mapStateToProps: (storeState, ownProps) => ({
+      ...ownProps,
+      visible: currentPluginConfigs?.customButton?.enabled || false,
+      label: currentPluginConfigs?.customButton?.label || 'Custom Action',
+      iconProps: getIconProps(menuItems.customButton, storeState),
+    }),
+  },
   filePickerButton: {
     type: 'iconButton',
     id: 'filePickerButton',
@@ -2244,6 +2289,7 @@ export const components: Record<string, UIComponentType<State>> = {
     id: 'headerEnd',
     type: 'groupedItems',
     slots: [
+      { componentId: 'customButton', priority: 0 },
       { componentId: 'searchButton', priority: 1 },
     ],
     props: {
@@ -2662,6 +2708,9 @@ export function PDFViewer({ config }: PDFViewerProps) {
 
   // **Merge user configurations with defaults**
   const pluginConfigs = mergePluginConfigs(config.plugins);
+
+  // Set the global configs for menu items to access
+  currentPluginConfigs = pluginConfigs;
 
   if (!engine || isLoading)
     return (

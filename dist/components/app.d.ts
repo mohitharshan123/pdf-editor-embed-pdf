@@ -15,6 +15,12 @@ import { FULLSCREEN_PLUGIN_ID, FullscreenState } from '@embedpdf/plugin-fullscre
 import { INTERACTION_MANAGER_PLUGIN_ID, InteractionManagerState } from '@embedpdf/plugin-interaction-manager/preact';
 import { HISTORY_PLUGIN_ID, HistoryState } from '@embedpdf/plugin-history/preact';
 export { ScrollStrategy, ZoomMode, SpreadMode, Rotation };
+export interface CustomButtonConfig {
+    enabled?: boolean;
+    label?: string;
+    icon?: string;
+    callback?: () => void;
+}
 export interface PluginConfigs {
     viewport?: ViewportPluginConfig;
     scroll?: ScrollPluginConfig;
@@ -24,6 +30,7 @@ export interface PluginConfigs {
     tiling?: TilingPluginConfig;
     thumbnail?: ThumbnailPluginConfig;
     annotation?: AnnotationPluginConfig;
+    customButton?: CustomButtonConfig;
 }
 export interface PDFViewerConfig {
     src: string;
