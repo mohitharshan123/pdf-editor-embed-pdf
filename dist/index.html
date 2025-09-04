@@ -36,9 +36,16 @@
           enabled: true,
           label: 'Finish',
           icon: 'save',
-          callback: () => {
-            alert('Custom button clicked!');
-            console.log('Custom button callback executed');
+          callback: (file) => {
+            alert('Custom button clicked! PDF file received.');
+            // Example: Download the edited file
+            const blob = new Blob([file], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'edited-document.pdf';
+            a.click();
+            URL.revokeObjectURL(url);
           }
         }
       }

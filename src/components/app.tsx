@@ -176,7 +176,7 @@ export interface CustomButtonConfig {
   enabled?: boolean;
   label?: string;
   icon?: string;
-  callback?: () => void;
+  callback?: (file: ArrayBuffer) => void;
 }
 
 export interface PluginConfigs {
@@ -234,7 +234,7 @@ const DEFAULT_PLUGIN_CONFIGS: Required<PluginConfigs> = {
     enabled: false,
     label: 'Custom Action',
     icon: 'save',
-    callback: () => { },
+    callback: (file: ArrayBuffer) => { },
   },
 };
 
@@ -273,6 +273,9 @@ type State = GlobalStoreState<{
 
 // Store the current plugin configs for use in menu items
 let currentPluginConfigs: Required<PluginConfigs> | null = null;
+
+// Helper function to get custom button config safely
+const getCustomButtonConfig = () => currentPluginConfigs?.customButton;
 
 export const menuItems: Record<string, MenuItem<State>> = {
   menuCtr: {
@@ -733,14 +736,27 @@ export const menuItems: Record<string, MenuItem<State>> = {
   customButton: {
     id: 'customButton',
     label: 'Custom Action',
-    icon: currentPluginConfigs?.customButton?.icon || 'save',
+    icon: getCustomButtonConfig()?.icon || 'save',
     type: 'action',
-    action: () => {
-      if (currentPluginConfigs?.customButton?.callback) {
-        currentPluginConfigs.customButton.callback();
+    action: (registry) => {
+      const callback = getCustomButtonConfig()?.callback;
+      if (callback) {
+        const exportPlugin = registry.getPlugin<ExportPlugin>('export')?.provides();
+        if (exportPlugin) {
+          const task = exportPlugin.saveAsCopy();
+          task.wait((buffer) => {
+            callback(buffer);
+          }, (error) => {
+            console.error('Failed to get edited file:', error);
+            callback(new ArrayBuffer(0));
+          });
+        } else {
+          console.error('Export plugin not available');
+          callback(new ArrayBuffer(0));
+        }
       }
     },
-    visible: () => currentPluginConfigs?.customButton?.enabled || false,
+    visible: () => getCustomButtonConfig()?.enabled || false,
   },
   fitToWidth: {
     id: 'fitToWidth',
@@ -2080,8 +2096,8 @@ export const components: Record<string, UIComponentType<State>> = {
     },
     mapStateToProps: (storeState, ownProps) => ({
       ...ownProps,
-      visible: currentPluginConfigs?.customButton?.enabled || false,
-      label: currentPluginConfigs?.customButton?.label || 'Custom Action',
+      visible: getCustomButtonConfig()?.enabled || false,
+      label: getCustomButtonConfig()?.label || 'Custom Action',
       iconProps: getIconProps(menuItems.customButton, storeState),
     }),
   },

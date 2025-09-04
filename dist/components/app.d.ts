@@ -19,7 +19,7 @@ export interface CustomButtonConfig {
     enabled?: boolean;
     label?: string;
     icon?: string;
-    callback?: () => void;
+    callback?: (file: ArrayBuffer) => void;
 }
 export interface PluginConfigs {
     viewport?: ViewportPluginConfig;
